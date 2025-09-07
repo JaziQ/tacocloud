@@ -1,19 +1,32 @@
-package jaq.tacocloud.model;
+package jaq.tacocloud;
 
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jaq.tacocloud.Taco;
+import org.bson.types.ObjectId;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import java.util.List;
 import java.util.ArrayList;
 import lombok.Data;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
-public class Order {
+@Document
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private ObjectId id;
+
+    private Date placedAt;
 
     @NotBlank(message="Delivery name is required")
     private String deliveryName;
@@ -33,13 +46,14 @@ public class Order {
     @CreditCardNumber(message="Not a valid credit card number")
     private String ccNumber;
 
-    @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([2-9][0-9])$",
+    @Pattern(regexp= "^(0[1-9]|1[0-2])(/)([2-9][0-9])$",
             message="Must be formatted MM/YY")
     private String ccExpiration;
 
     @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco) {

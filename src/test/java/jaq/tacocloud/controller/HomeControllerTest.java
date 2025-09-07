@@ -9,6 +9,7 @@ import static
         org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static
         org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import jaq.tacocloud.web.HomeController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
