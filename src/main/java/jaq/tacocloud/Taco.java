@@ -1,9 +1,10 @@
 package jaq.tacocloud;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,8 +13,8 @@ import java.util.List;
 @Data
 public class Taco {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Id
+    private ObjectId id;
 
     private Date createdAt = new Date();
 
