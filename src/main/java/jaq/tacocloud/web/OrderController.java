@@ -1,11 +1,9 @@
 package jaq.tacocloud.web;
 
 import jakarta.validation.Valid;
-import jaq.tacocloud.User;
 import jaq.tacocloud.data.OrderRepo;
 import jaq.tacocloud.Order;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +15,9 @@ import org.springframework.web.bind.support.SessionStatus;
 @SessionAttributes("order")
 public class OrderController {
 
-    public OrderRepo orderRepo;
+    private OrderRepo orderRepo;
 
-    public OrderController(OrderRepo orderRepo){
+    public OrderController(OrderRepo orderRepo) {
         this.orderRepo = orderRepo;
     }
 
@@ -33,10 +31,9 @@ public class OrderController {
     }
     @PostMapping
     public String processOrder(@Valid Order order, Errors errors,
-                               SessionStatus sessionStatus, @AuthenticationPrincipal User user) {
+                               SessionStatus sessionStatus) {
         if (errors.hasErrors())
             return "orderForm";
-        order.setUser(user);
         orderRepo.save(order);
         sessionStatus.setComplete();
 

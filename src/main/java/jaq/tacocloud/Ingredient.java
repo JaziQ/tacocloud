@@ -1,19 +1,24 @@
 package jaq.tacocloud;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import lombok.Data;
 
 
 @Data
-@Document
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@Entity
 public class Ingredient {
 
     @Id
+    @Column(length = 4)
     private String id;
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Type type;
 
     public enum Type {

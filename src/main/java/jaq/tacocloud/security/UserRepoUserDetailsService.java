@@ -7,9 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import java.util.List;
-
 
 @Service
 public class UserRepoUserDetailsService implements UserDetailsService{
@@ -23,14 +20,9 @@ public class UserRepoUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
+        if (user != null) {
+            return user;
         }
-        if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            throw new IllegalStateException("User password is empty for " + username);
-        }
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), authorities);
+        throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 }
